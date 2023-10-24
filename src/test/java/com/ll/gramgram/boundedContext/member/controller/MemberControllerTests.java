@@ -68,4 +68,67 @@ public class MemberControllerTests {
                 .andExpect(handler().methodName("join")) // 핸들러의 메서드 이름 확인
                 .andExpect(status().is3xxRedirection()); // HTTP 응답 상태가 3xx 리다이렉션인지 확인
     }
+
+
+    @Test
+    @DisplayName("회원가입시에 올바른 데이터를 넘기지 않으면 400")
+    void t003() throws Exception {
+        // WHEN
+        ResultActions resultActions = mvc // username이 에러
+                .perform(post("/member/join")
+                        .with(csrf()) // CSRF 키 생성
+                        .param("username", "user10")
+                )
+                .andDo(print());
+
+        // THEN
+        resultActions //username 400에러 발생
+                .andExpect(handler().handlerType(MemberController.class))
+                .andExpect(handler().methodName("join"))
+                .andExpect(status().is4xxClientError());
+
+        // WHEN
+        resultActions = mvc //password 에러
+                .perform(post("/member/join")
+                        .with(csrf()) // CSRF 키 생성
+                        .param("password", "1234")
+                )
+                .andDo(print());
+
+        // THEN
+        resultActions // password 400에러 발생
+                .andExpect(handler().handlerType(MemberController.class))
+                .andExpect(handler().methodName("join"))
+                .andExpect(status().is4xxClientError());
+
+        // WHEN
+        resultActions = mvc //username의 길이가 너무 긴 경우
+                .perform(post("/member/join")
+                        .with(csrf()) // CSRF 키 생성
+                        .param("username", "user10" + "a".repeat(30))
+                        .param("password", "1234")
+                )
+                .andDo(print());
+
+        // THEN
+        resultActions // username의 길이가 너무 긴 경우 400 에러 발생
+                .andExpect(handler().handlerType(MemberController.class))
+                .andExpect(handler().methodName("join"))
+                .andExpect(status().is4xxClientError());
+
+        // WHEN
+        resultActions = mvc // password의 길이가 너무 긴 경우 발생
+                .perform(post("/member/join")
+                        .with(csrf()) // CSRF 키 생성
+                        .param("username", "user10")
+                        .param("password", "1234" + "a".repeat(30))
+                )
+                .andDo(print());
+
+        // THEN
+        resultActions //password의 길이가 너무 긴 경우 에러 400 발생
+                .andExpect(handler().handlerType(MemberController.class))
+                .andExpect(handler().methodName("join"))
+                .andExpect(status().is4xxClientError());
+    }
 }
