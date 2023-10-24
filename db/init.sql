@@ -1,0 +1,3 @@
+DROP DATABASE IF EXISTS gram_dev;
+CREATE DATABASE IF gram_dev;
+USE gram_dev;
