@@ -22,12 +22,44 @@
 <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.css" rel="stylesheet" type="text/css"/>
 <script src="https://cdn.tailwindcss.com"></script>
 
-<form th:action method="POST" class="p-10 flex flex-col gap-4">
+<script>
+    function JoinForm__submit(form){
+
+        form.username.value = form.username.value.trim();
+
+        if(form.username.value.length == 0){
+            alert('아이디를 입력하세요');
+            form.username.focus();
+            return ;
+        }
+
+        if(form.username.value.length < 4){
+            alert('아이디를 4자이상 입력하세요');
+            form.username.focus();
+            return ;
+        }
+
+        if(form.password.value.length == 0){
+            alert('password 입력하세요');
+            form.password.focus();
+            return ;
+        }
+
+        if(form.password.value.length < 4){
+            alert('password 4자이상 입력하세요');
+            form.password.focus();
+            return ;
+        }
+    }
+
+</script>
+
+<form th:action method="POST" class="p-10 flex flex-col gap-4" onsubmit="JoinForm__submit(this); return false;">
     <div>
-        <input type="text" name="username" placeholder="아이디" class="input input-bordered">
+        <input type="text" name="username" placeholder="아이디" maxlength="30" class="input input-bordered">
     </div>
     <div>
-        <input type="password" name="password" placeholder="비밀번호" class="input input-bordered">
+        <input type="password" name="password" placeholder="비밀번호" maxlength="30" class="input input-bordered">
     </div>
     <div>
         <input type="submit" value="회원가입" class="btn btn-primary">
@@ -35,5 +67,7 @@
 </form>
 
 </body>
-
+<!--function 키워드를 사용하여 함수를 정의합니다.
+JoinForm__submit은 함수의 이름이며, 이는 특정한 동작을 수행하는 함수의 이름을 나타냅니다.
+괄호 안의 form은 함수에 전달된 인자입니다.-->
 </html>
