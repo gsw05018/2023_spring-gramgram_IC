@@ -1,16 +1,20 @@
 package com.ll.gramgram.boundedContext.member.controller;
 
 
+import com.ll.gramgram.boundedContext.member.entity.Member;
+import com.ll.gramgram.boundedContext.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -25,6 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class MemberControllerTests {
     @Autowired
     private MockMvc mvc; // MockMvc 객체 주입받음
+
+    @Autowired
+    private MemberService memberService;
 
     @Test
     @DisplayName("회원가입 폼") // 테스트 메서드에 대한 설명을 나타내는 애너테이션
@@ -52,6 +59,7 @@ public class MemberControllerTests {
 
     @Test
     @DisplayName("회원가입")
+    @Rollback // db에 흔적이 남음
     void t002() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
@@ -67,6 +75,10 @@ public class MemberControllerTests {
                 .andExpect(handler().handlerType(MemberController.class)) // 핸들러의 타입 확인
                 .andExpect(handler().methodName("join")) // 핸들러의 메서드 이름 확인
                 .andExpect(status().is3xxRedirection()); // HTTP 응답 상태가 3xx 리다이렉션인지 확인
+
+        Member member = memberService.findByUsername("user10").orElse(null);
+
+        assertThat(member).isNotNull();
     }
 
 
