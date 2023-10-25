@@ -169,4 +169,25 @@ public class MemberControllerTests {
                         """.stripIndent().trim())));
     }
 
+        @Test
+        @DisplayName("로그인 처리")
+        void t005() throws  Exception{
+        // WHEN
+            ResultActions resultActions = mvc
+                    .perform(post("/member/login")
+                            .with(csrf())
+                            .param("username", "user1")
+                            .param("password", "1234")
+                    )
+                    .andDo(print());
+            // member/login 엔드포인트에 post요청을 보내고 csrf 토큰과 함께 username 및 password 전송
+            // 결과 동작을 저장하고, 콘솔에 출력
+
+            resultActions
+                    .andExpect(status().is3xxRedirection())
+                    // HTTP 응답의 상태가 3xx Redirection인지 확인
+                    .andExpect(redirectedUrlPattern("/**"));
+                    // 리다이렉션된 URL이 특정 패턴을 따르는지 확인
+        }
+
 }

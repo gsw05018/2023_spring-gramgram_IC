@@ -17,6 +17,7 @@ public class NotProd {
     ){
         return args -> {
             // MemberService를 사용하여 각각의 사용자 등록
+            memberService.join("admin", "1234");
             memberService.join("user1", "1234");
             memberService.join("user2", "1234");
             memberService.join("user3", "1234");
