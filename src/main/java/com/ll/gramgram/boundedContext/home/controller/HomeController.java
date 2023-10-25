@@ -36,7 +36,7 @@ public class HomeController {
             sb.append(String.format("%s: %s\n", attributeName, attributeValue));
             // 세션 내용을 문자열로 연결
         }
-        return sb.toString();
+        return sb.toString().replaceAll("\n", "<br>");
         // 세션 정보를 문자열 형태로 반환
     }
     // 현재 세션의 저장된 속성들을 읽고, 그 앖을 문자열로 포매팅하여 반환
