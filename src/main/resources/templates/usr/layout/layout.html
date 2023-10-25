@@ -1,0 +1,72 @@
+<html>
+
+<head>
+
+    <!-- 문자 인코딩 및 화면 크기 설정 -->
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- jQuery 및 toastr 라이브러리를 불러옵니다 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://jhs512.github.io/toastr/toastr.css">
+
+    <!-- GmarketSansMedium 폰트를 외부에서 불러오는 스타일 시트 -->
+    <style>
+        @font-face {
+            font-family: 'GmarketSansMedium';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        html > body {
+            font-family: "GmarketSansMedium";
+            text-underline-position: under;
+        }
+    </style>
+
+    <script>
+        toastr.options = {
+            closeButton: true, // 토스트 메시지에 닫기 버튼 표시
+            debug: false, // 디버깅 모드 활성화하면 토스트 메시지에 대한 디버그 정보 출력
+            newestOnTop: true, // 최신 메시지 맨 위 표시
+            progressBar: true, // 진행 표시 줄을 통해 메시지의 시가이 얼마나 남았는지르 보여줌
+            positionClass: "toast-top-right", // 토스트 메시지가 나탈 위치 지정
+            preventDuplicates: false, // 중복된 메시지 방지
+            onclick: null, // 메시지 클릭했을 때 실행할 함수 지정
+            showDuration: "300", // 나타나는데 걸리는 시간 지정
+            hideDuration: "1000", // 사라지는데 걸리는 시간
+            timeOut: "5000", // 화면에 표시되는 시간
+            extendedTimeOut: "1000", // 사용자가 마우스를 올려놓은 경우 토스트 메시지가 화면에 유지되는 시간
+            showEasing: "swing", // 나타날때 사용되는 애니메이션효과
+            hideEasing: "linear", // 사라질때 사용되는 애니메이션효과
+            showMethod: "fadeIn", // 나타나탈 때 사용되는 애니메이션 방법
+            hideMethod: "fadeOut" // 사라질때 사요외는 애니메이션 방법
+        };
+
+        function toastNotice(msg) {
+            toastr["success"](msg, "알림");
+        }
+
+        function toastWarning(msg) {
+            toastr["warning"](msg, "알림");
+        }
+    </script>
+
+
+</head>
+
+<body>
+
+<!-- DaisyUI 스타일 시트와 Tailwind CSS를 불러오는 스크립트 -->
+<link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.css" rel="stylesheet" type="text/css"/>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<main layout:fragment="main"></main>
+
+</body>
+
+</html>

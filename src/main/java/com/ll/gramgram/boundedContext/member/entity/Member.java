@@ -23,7 +23,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @ToString
 @Entity
 public class Member {
-
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -33,6 +32,4 @@ public class Member {
     private LocalDateTime modifyDate;
     private String username;
     private String password;
-
-
 }

@@ -59,19 +59,20 @@ public class MemberControllerTests {
 
     @Test
     @DisplayName("회원가입")
-    @Rollback // db에 흔적이 남음
+    @Rollback
+        // db에 흔적이 남음
     void t002() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
                 .perform(post("/member/join") // member/join으로 post 요청 수행
-                        .with(csrf()) // CSRF 키 생성 
+                        .with(csrf()) // CSRF 키 생성
                         .param("username", "user10") // 요청에 username 파라미터 추가
                         .param("password", "1234") // 요청에 password 파라미터 추가
                 )
                 .andDo(print());
 
         // THEN
-        resultActions 
+        resultActions
                 .andExpect(handler().handlerType(MemberController.class)) // 핸들러의 타입 확인
                 .andExpect(handler().methodName("join")) // 핸들러의 메서드 이름 확인
                 .andExpect(status().is3xxRedirection()); // HTTP 응답 상태가 3xx 리다이렉션인지 확인
@@ -143,4 +144,29 @@ public class MemberControllerTests {
                 .andExpect(handler().methodName("join"))
                 .andExpect(status().is4xxClientError());
     }
+
+    @Test
+    @DisplayName("로그인 폼") // 테스트 메서드에 대한 설명을 나타내는 애너테이션
+    void t004() throws Exception {
+        // WHEN
+        ResultActions resultActions = mvc
+                .perform(get("/member/login")) // member/join으로 get요청 수행
+                .andDo(print()); // 크게 의미 없고, 그냥 확인용
+
+        // THEN
+        resultActions
+                .andExpect(handler().handlerType(MemberController.class)) // 핸들러의 타입 확인
+                .andExpect(handler().methodName("showlogin")) // 핸들러의 메서드 이름 확인
+                .andExpect(status().is2xxSuccessful()) // HTTP 응답 상태가 2xx성공인지 확인
+                .andExpect(content().string(containsString(""" 
+                        <input type="text" name="username"
+                        """.stripIndent().trim()))) // 응답 본문에 특정 문자열이 포함되어 있는지 확인
+                .andExpect(content().string(containsString(""" 
+                        <input type="password" name="password"
+                        """.stripIndent().trim())))
+                .andExpect(content().string(containsString("""
+                        <input type="submit" value="로그인"
+                        """.stripIndent().trim())));
+    }
+
 }
