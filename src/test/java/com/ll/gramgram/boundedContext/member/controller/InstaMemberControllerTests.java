@@ -13,7 +13,9 @@ import org.springframework.test.web.servlet.ResultActions; // Spring MVC 테스�
 import org.springframework.transaction.annotation.Transactional; // 테스트가 끝나면 롤백시키기 위한 import문
 
 import static org.hamcrest.Matchers.containsString; // 문자열에 특정 문자열이 포함되어 있는지 확인하기 위한 import문
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get; // GET 요청을 보내기 위한 import문
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print; // 테스트 결과를 출력하기 위한 import문
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*; // 특정 조건에 맞는 결과를 기대하는 import문
 
@@ -71,5 +73,28 @@ public class InstaMemberControllerTests {
                 .andExpect(handler().methodName("showConnect")) // 핸들러 메서드 이름을 검증하는 조건을 추가
                 .andExpect(status().is3xxRedirection()) // HTTP 상태 코드가 3xx(리다이렉션)인지 검증하는 조건을 추가
                 .andExpect(redirectedUrlPattern("**/member/login**")); // 리다이렉트된 URL 패턴을 검증하는 조건을 추가
+    }
+
+    @Test
+    @DisplayName("인스타회원 정보 입력 폼 처리")
+    @WithUserDetails("user1")
+    void t003() throws Exception{
+
+        // WHEN
+        ResultActions resultActions = mvc
+                .perform(post("/instaMember/connect")
+                        .with(csrf())
+                        .param("username", "abc123")
+                        .param("gender","W")
+                )
+                .andDo(print());
+
+        // THEN
+        resultActions
+                .andExpect(handler().handlerType(InstaMemberController.class))
+                .andExpect(handler().methodName("connect"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/pop**"));
+
     }
 }
