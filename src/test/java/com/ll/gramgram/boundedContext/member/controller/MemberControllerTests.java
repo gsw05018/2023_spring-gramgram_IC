@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -63,7 +64,7 @@ public class MemberControllerTests {
 
     @Test
     @DisplayName("회원가입")
-    @Rollback
+    @Rollback(value = false)  //db에 흔적이 남기위해서 value를 false로해야한다
         // db에 흔적이 남음
     void t002() throws Exception {
         // WHEN
@@ -113,7 +114,7 @@ public class MemberControllerTests {
                 .andDo(print());
 
         // THEN
-        resultActions // password 400에러 발생
+        resultActions
                 .andExpect(handler().handlerType(MemberController.class))
                 .andExpect(handler().methodName("join"))
                 .andExpect(status().is4xxClientError());
@@ -207,5 +208,25 @@ public class MemberControllerTests {
                     .andExpect(redirectedUrlPattern("/**"));
                     // 리다이렉션된 URL이 특정 패턴을 따르는지 확인
         }
+
+    @Test
+// @Rollback(value = false) // DB에 흔적이 남는다.
+    @DisplayName("로그인 후에 내비바에 로그인한 회원의 username")
+    @WithUserDetails("user1") // user1로 로그인 한 상태로 진행
+    void t006() throws Exception {
+        // WHEN
+        ResultActions resultActions = mvc
+                .perform(get("/member/me"))  // /member/me 엔드포인트에 GET 요청을 보냄
+                .andDo(print()); // 요청과 응답을 출력
+
+        // THEN
+        resultActions
+                .andExpect(handler().handlerType(MemberController.class)) // 처리기 타입이 MemberController 클래스인지 확인
+                .andExpect(handler().methodName("showMe")) // 처리기 메서드 이름이 showMe인지 확인
+                .andExpect(status().is2xxSuccessful()) // 응답 상태 코드가 2xx(성공)인지 확인
+                .andExpect(content().string(containsString("""
+                    user1님 환영합니다.
+                    """.stripIndent().trim()))); // 응답 콘텐츠에 "user1님 환영합니다." 문자열이 포함되어 있는지 확인
+    }
 
 }

@@ -51,8 +51,15 @@ public class MemberController {
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
-    public String showlogin() {
+    public String showLogin() {
         return "usr/member/login";
+    }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/me")
+    public String showMe() {
+        return "usr/member/me";
     }
 
 
