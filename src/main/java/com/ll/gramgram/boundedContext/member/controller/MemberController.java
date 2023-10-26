@@ -1,6 +1,7 @@
 package com.ll.gramgram.boundedContext.member.controller;
 
 import com.ll.gramgram.boundedContext.member.service.MemberService;
+import com.ll.gramgram.standard.util.Ut;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -9,12 +10,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.security.Principal;
 
 @Controller
 @RequestMapping("/member")
@@ -48,8 +46,9 @@ public class MemberController {
 
         memberService.join(joinForm.getUsername(), joinForm.getPassword());
 
-        return "redirect:/";
+        return "redirect:/member/login?msg=" + Ut.url.encode("회원가입이 완료되었습니다. <br> 로그인후 이용하세요");
     }
+    // 경로에 한글을 넣기 위해서는 encode를 넣어야되고 위 문법을 써야 한다
 
 
     @PreAuthorize("isAnonymous()")

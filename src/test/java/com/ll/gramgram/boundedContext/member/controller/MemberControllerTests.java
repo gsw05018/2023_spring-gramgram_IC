@@ -80,7 +80,8 @@ public class MemberControllerTests {
         resultActions
                 .andExpect(handler().handlerType(MemberController.class)) // 핸들러의 타입 확인
                 .andExpect(handler().methodName("join")) // 핸들러의 메서드 이름 확인
-                .andExpect(status().is3xxRedirection()); // HTTP 응답 상태가 3xx 리다이렉션인지 확인
+                .andExpect(status().is3xxRedirection()) // HTTP 응답 상태가 3xx 리다이렉션인지 확인
+                .andExpect(redirectedUrlPattern("/member/login?msg=**"));
 
         Member member = memberService.findByUsername("user10").orElse(null);
 
@@ -161,7 +162,7 @@ public class MemberControllerTests {
         // THEN
         resultActions
                 .andExpect(handler().handlerType(MemberController.class)) // 핸들러의 타입 확인
-                .andExpect(handler().methodName("showlogin")) // 핸들러의 메서드 이름 확인
+                .andExpect(handler().methodName("showLogin")) // 핸들러의 메서드 이름 확인
                 .andExpect(status().is2xxSuccessful()) // HTTP 응답 상태가 2xx성공인지 확인
                 .andExpect(content().string(containsString(""" 
                         <input type="text" name="username"
