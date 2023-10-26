@@ -1,7 +1,9 @@
 package com.ll.gramgram.base.rq;
 
+import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
+import com.ll.gramgram.standard.util.Ut;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -10,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
+
+import java.util.Date;
 
 @Component // Spring에서 관리하는 Bean으로 지정하는 Component 어노테이션
 @RequestScope // 요청 스코프에서 동작하도록 지정하는 RequestScope 어노테이션
@@ -77,4 +81,31 @@ public class Rq {
         return "common/common.js";
 
     }
+
+    public String historyBack(RsData rsData) {
+        return historyBack(rsData.getMsg());
+    }
+    // 주어진 RsData 객체에서 메시지를 가져와 historyBack 메서드에 전달하여 실행하고 결과를 반환
+
+    public String redirectWithMsg(String url, RsData rsData) {
+        return redirectWithMsg(url, rsData.getMsg());
+    }
+    // 주어진 URL가 RsData 객체에서 메시지를 가져와 redirctWithMsg 메서드에 전달하여 결과를 반환
+
+    public String redirectWithMsg(String url, String msg) {
+        return "redirect:" + urlWithMsg(url, msg);
+    }
+    // 주어진 URL과 메시지를 조합하여 "redirect:"를 추가하여 리다이렉트할 URL을 반환합니다.
+
+    private String urlWithMsg(String url, String msg) {
+        // 기존 URL에 혹시 msg 파라미터가 있다면 그것을 지우고 새로 넣는다.
+        return Ut.url.modifyQueryParam(url, "msg", msgWithTtl(msg));
+    }
+    // 기존 URL에 있는 msg파라미터를 삭제하고 새로운 msg파라미터를 추가하여 URL을 수정하여 반환
+    // 이때, msg 파라미터에는 ttl을 포함하여 반환
+
+    private String msgWithTtl(String msg) {
+        return Ut.url.encode(msg) + ";ttl=" + new Date().getTime();
+    }
+    // 주어진 메시지를 URL 인코딩하고 현재 시간을 기준으로 ttl 파라미터를 추가하여 반환
 }
