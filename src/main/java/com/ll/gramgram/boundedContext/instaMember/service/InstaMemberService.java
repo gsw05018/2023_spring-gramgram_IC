@@ -6,11 +6,13 @@ import com.ll.gramgram.boundedContext.instaMember.repository.InstaMemberReposito
 import com.ll.gramgram.boundedContext.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service // 해당 클래스가 서비스임을 나타내는 어노테이션
 @RequiredArgsConstructor // 필드 주입을 위한 생성자를 자동으로 생성해주는 롬복 어노테이션
+@Transactional(readOnly = true)
 public class InstaMemberService { // InstaMember 서비스 클래스 시작
 
     private final InstaMemberRepositorty instaMemberRepositorty; // InstaMemberRepository를 주입받는 필드
@@ -19,14 +21,19 @@ public class InstaMemberService { // InstaMember 서비스 클래스 시작
         return instaMemberRepositorty.findByUsername(username); // username으로 인스타멤버를 찾아 반환하는 부분
     }
 
+    @Transactional
     public RsData<InstaMember> connect(Member member, String username, String gender) { // 인스타멤버를 연결하는 메서드
 
         if (findByUsername(username).isPresent()) { // 이미 존재하는 username인지 확인하는 부분
             return RsData.of("F-1", "해당 인스타그램 아이디는 이미 다른 사용자와 연결되었습니다"); // 이미 존재할 경우 에러 메세지 반환
         }
         RsData<InstaMember> instaMemberRsData = create(username, gender); // 연결을 진행하는 메서드 호출
+
+        member.setInstaMember(instaMemberRsData.getData());
+
         return instaMemberRsData; // 연결 결과 반환
     }
+
 
     private RsData<InstaMember> create(String username, String gender) { // 인스타멤버를 생성하는 메서드
         InstaMember instaMember = InstaMember // 인스타멤버 객체 생성

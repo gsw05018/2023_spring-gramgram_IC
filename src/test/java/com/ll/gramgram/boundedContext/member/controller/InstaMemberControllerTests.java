@@ -3,6 +3,8 @@ package com.ll.gramgram.boundedContext.member.controller;
 import com.ll.gramgram.boundedContext.instaMember.controller.InstaMemberController;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.instaMember.service.InstaMemberService;
+import com.ll.gramgram.boundedContext.member.entity.Member;
+import com.ll.gramgram.boundedContext.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,8 @@ public class InstaMemberControllerTests {
 
     @Autowired
     private MockMvc mvc; // MockMvc 객체를 의존성 주입받는 변수
+    @Autowired
+    private MemberService memberService;
 
     @Autowired
     private InstaMemberService instaMemberService;
@@ -86,7 +90,7 @@ public class InstaMemberControllerTests {
     @DisplayName("인스타회원 정보 입력 폼 처리") // 테스트의 이름을 표시하는 어노테이션
     @WithUserDetails("user1") // 지정된 사용자로 인증된 상태에서 테스트를 실행하는 어노테이션
     @Rollback(value = false) // 롤백을 수행하지 않고 테스트 데이터를 데이터베이스에 반영하는 옵션을 설정하는 어노테이션
-    void t003() throws Exception { // 테스트 메서드 시작
+    void t003() throws Exception { //9 테스트 메서드 시작
 
         // WHEN 섹션, 테스트할 코드의 실행 부분
         ResultActions resultActions = mvc
@@ -106,7 +110,9 @@ public class InstaMemberControllerTests {
 
         InstaMember instaMember = instaMemberService.findByUsername("abc123").orElse(null); // "abc123" 유저네임을 가진 인스타멤버를 찾는 부분
 
-        assertThat(instaMember).isNotNull(); // 찾은 인스타멤버가 null이 아닌지 검증하는 부분
+        Member member = memberService.findByUsername("user1").orElseThrow();
+
+        assertThat(member.getInstaMember()).isEqualTo(instaMember); // 찾은 인스타멤버가 null이 아닌지 검증하는 부분
 
     } // 테스트 메서드 종료
 
