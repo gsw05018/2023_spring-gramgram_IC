@@ -1,23 +1,27 @@
 package com.ll.gramgram.boundedContext.member.controller;
 
-import com.ll.gramgram.boundedContext.instaMember.controller.InstaMemberController; // 인스타 멤버 컨트롤러를 사용하기 위한 import문
-import org.junit.jupiter.api.DisplayName; // 테스트 케이스의 이름을 정의하기 위한 import문
-import org.junit.jupiter.api.Test; // 테스트 케이스를 생성하기 위한 import문
-import org.springframework.beans.factory.annotation.Autowired; // 의존성 주입을 위한 import문
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc; // MockMvc를 자동 구성하기 위한 import문
-import org.springframework.boot.test.context.SpringBootTest; // 테스트를 위한 Spring Boot 어플리케이션 컨텍스트를 로드하기 위한 import문
-import org.springframework.security.test.context.support.WithUserDetails; // 테스트에 사용될 사용자의 디테일을 지정하기 위한 import문
-import org.springframework.test.context.ActiveProfiles; // 테스트 프로파일을 설정하기 위한 import문
-import org.springframework.test.web.servlet.MockMvc; // Spring MVC 테스트를 위한 가짜 객체를 생성하기 위한 import문
-import org.springframework.test.web.servlet.ResultActions; // Spring MVC 테스트 결과를 나타내기 위한 import문
-import org.springframework.transaction.annotation.Transactional; // 테스트가 끝나면 롤백시키기 위한 import문
+import com.ll.gramgram.boundedContext.instaMember.controller.InstaMemberController;
+import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
+import com.ll.gramgram.boundedContext.instaMember.service.InstaMemberService;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.Matchers.containsString; // 문자열에 특정 문자열이 포함되어 있는지 확인하기 위한 import문
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get; // GET 요청을 보내기 위한 import문
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print; // 테스트 결과를 출력하기 위한 import문
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*; // 특정 조건에 맞는 결과를 기대하는 import문
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest // Spring Boot 어플리케이션 컨텍스트를 로드하기 위한 어노테이션
 @AutoConfigureMockMvc // MockMvc를 자동 구성하기 위한 어노테이션
@@ -27,6 +31,9 @@ public class InstaMemberControllerTests {
 
     @Autowired
     private MockMvc mvc; // MockMvc 객체를 의존성 주입받는 변수
+
+    @Autowired
+    private InstaMemberService instaMemberService;
 
     // 인스탕회원 정보 입력 폼 테스트
     @Test // 테스트 메서드임을 나타내는 어노테이션
@@ -78,6 +85,7 @@ public class InstaMemberControllerTests {
     @Test
     @DisplayName("인스타회원 정보 입력 폼 처리")
     @WithUserDetails("user1")
+    @Rollback(value = false)
     void t003() throws Exception{
 
         // WHEN
@@ -95,6 +103,10 @@ public class InstaMemberControllerTests {
                 .andExpect(handler().methodName("connect"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("/pop**"));
+
+        InstaMember instaMember = instaMemberService.findByUsername("abc123").orElse(null);
+
+        assertThat(instaMember).isNotNull();
 
     }
 }
