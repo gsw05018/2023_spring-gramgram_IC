@@ -1,6 +1,5 @@
 package com.ll.gramgram.boundedContext.member.controller;
 
-import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -62,10 +61,8 @@ public class MemberController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/me")
-    public String showMe(Principal principal, Model model) {
+    public String showMe() {
 
-            Member loginedMember = memberService.findByUsername(principal.getName()).orElseThrow();
-            model.addAttribute("loginedMember", loginedMember);
         return "usr/member/me";
     }
 
