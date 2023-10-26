@@ -1,5 +1,7 @@
 package com.ll.gramgram.boundedContext.member.controller;
 
+import com.ll.gramgram.base.rsData.RsData;
+import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
 import com.ll.gramgram.standard.util.Ut;
 import jakarta.validation.Valid;
@@ -44,9 +46,15 @@ public class MemberController {
     @PostMapping("/join")
     public String join(@Valid JoinForm joinForm) {
 
-        memberService.join(joinForm.getUsername(), joinForm.getPassword());
+        RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword());
 
-        return "redirect:/member/login?msg=" + Ut.url.encode("회원가입이 완료되었습니다. <br> 로그인후 이용하세요");
+        if(joinRs.isFail()){
+            return "common/common.js";
+        }
+
+        String msg = joinRs.getMsg() + "\n 로그인후 이용해주세요";
+
+        return "redirect:/member/login?msg=" + Ut.url.encode(msg);
     }
     // 경로에 한글을 넣기 위해서는 encode를 넣어야되고 위 문법을 써야 한다
 
