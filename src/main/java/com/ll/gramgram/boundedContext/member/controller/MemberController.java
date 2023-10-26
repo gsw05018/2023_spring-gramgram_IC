@@ -1,5 +1,6 @@
 package com.ll.gramgram.boundedContext.member.controller;
 
+import com.ll.gramgram.base.rq.Rq;
 import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MemberController {
 
     private final MemberService memberService;
+    private final Rq rq;
 
     @AllArgsConstructor
     @Getter
@@ -49,7 +51,7 @@ public class MemberController {
         RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword());
 
         if(joinRs.isFail()){
-            return "common/common.js";
+            return rq.historyBack(joinRs.getMsg());
         }
 
         String msg = joinRs.getMsg() + "\n 로그인후 이용해주세요";

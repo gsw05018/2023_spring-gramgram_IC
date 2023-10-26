@@ -63,4 +63,9 @@ public class Rq {
         return member; // 회원정보를 반환
 
     }
+
+    public String historyBack(String msg) {
+        req.setAttribute("alertMsg", msg);
+        return "common/common.js";
+    }
 }
