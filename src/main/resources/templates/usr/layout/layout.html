@@ -72,13 +72,12 @@
     <a href="javascript:;" th:if="${@rq.login}" class="btn  btn-link" onclick="$(this).next().submit();">로그아웃</a>
     <form hidden  th:if="${@rq.login}" th:action="|/member/logout|" method="POST"></form>
     <span th:if="${@rq.login}" th:text="|${@rq.member.username}님 환영합니다.|"></span>
-    <span th:if="${@rq.login}" th:text="|당신의 회원번호는 ${@rq.member.id}번 입니다|"></span>
-    <span th:if="${@rq.login}" th:text="|당신의 ${@rq.member.createDate}에 가입하셨습니다|"></span>
 </header>
 <main layout:fragment="main"></main>
 
 <!--onclick안에 자바스크립트 코드가 포함되어있다.-->
 <!--타임리프에서는 is와 get을 생략해서 사용이 가능하다-->
+<!--rq는 편하게 쓸수는 있지만 login이 되지 않으면 member는 쓸수는 없다-->
 
 </body>
 
