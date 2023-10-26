@@ -66,18 +66,19 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <header>
     <a href="/" class="btn  btn-link">홈</a>
-    <a href="/member/me" sec:authorize="isAuthenticated()" class="btn  btn-link">내정보</a>
-    <a href="/member/login" sec:authorize="isAnonymous()" class="btn  btn-link">로그인</a>
-    <a href="/member/join" sec:authorize="isAnonymous()" class="btn  btn-link">회원가입</a>
-    <a href="javascript:;" sec:authorize="isAuthenticated()" class="btn  btn-link" onclick="$(this).next().submit();">로그아웃</a>
-    <form hidden  sec:authorize="isAuthenticated()" th:action="|/member/logout|" method="POST"></form>
-    <span sec:authorize="isAuthenticated()" th:text="|${#authentication.principal.username}님 환영합니다.|"></span>
-    <span sec:authorize="isAuthenticated()" >당신의 회원번호는 [[${@rq.member.id}]]입니다</span>
-    <span sec:authorize="isAuthenticated()" >당신의 가입날짜는 [[${@rq.member.createDate}]] 입니다</span>
+    <a href="/member/me" th:if="${@rq.login}" class="btn  btn-link">내정보</a>
+    <a href="/member/login" th:if="${@rq.logout}" class="btn  btn-link">로그인</a>
+    <a href="/member/join" th:if="${@rq.logout}" class="btn  btn-link">회원가입</a>
+    <a href="javascript:;" th:if="${@rq.login}" class="btn  btn-link" onclick="$(this).next().submit();">로그아웃</a>
+    <form hidden  th:if="${@rq.login}" th:action="|/member/logout|" method="POST"></form>
+    <span th:if="${@rq.login}" th:text="|${@rq.member.username}님 환영합니다.|"></span>
+    <span th:if="${@rq.login}" th:text="|당신의 회원번호는 ${@rq.member.id}번 입니다|"></span>
+    <span th:if="${@rq.login}" th:text="|당신의 ${@rq.member.createDate}에 가입하셨습니다|"></span>
 </header>
 <main layout:fragment="main"></main>
 
 <!--onclick안에 자바스크립트 코드가 포함되어있다.-->
+<!--타임리프에서는 is와 get을 생략해서 사용이 가능하다-->
 
 </body>
 
