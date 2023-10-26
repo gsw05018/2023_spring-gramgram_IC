@@ -82,31 +82,32 @@ public class InstaMemberControllerTests {
                 .andExpect(redirectedUrlPattern("**/member/login**")); // 리다이렉트된 URL 패턴을 검증하는 조건을 추가
     }
 
-    @Test
-    @DisplayName("인스타회원 정보 입력 폼 처리")
-    @WithUserDetails("user1")
-    @Rollback(value = false)
-    void t003() throws Exception{
+    @Test // 테스트 메서드임을 나타내는 어노테이션
+    @DisplayName("인스타회원 정보 입력 폼 처리") // 테스트의 이름을 표시하는 어노테이션
+    @WithUserDetails("user1") // 지정된 사용자로 인증된 상태에서 테스트를 실행하는 어노테이션
+    @Rollback(value = false) // 롤백을 수행하지 않고 테스트 데이터를 데이터베이스에 반영하는 옵션을 설정하는 어노테이션
+    void t003() throws Exception { // 테스트 메서드 시작
 
-        // WHEN
+        // WHEN 섹션, 테스트할 코드의 실행 부분
         ResultActions resultActions = mvc
-                .perform(post("/instaMember/connect")
-                        .with(csrf())
-                        .param("username", "abc123")
-                        .param("gender","W")
+                .perform(post("/instaMember/connect") // POST 요청을 수행하는 부분
+                        .with(csrf()) // CSRF 토큰을 요청에 추가하는 부분
+                        .param("username", "abc123") // 요청 파라미터에 "username"과 값을 추가하는 부분
+                        .param("gender", "W") // 요청 파라미터에 "gender"와 값을 추가하는 부분
                 )
-                .andDo(print());
+                .andDo(print()); // 요청 및 응답 정보를 출력하는 부분
 
-        // THEN
+        // THEN 섹션, 테스트 결과를 검증하는 부분
         resultActions
-                .andExpect(handler().handlerType(InstaMemberController.class))
-                .andExpect(handler().methodName("connect"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/pop**"));
+                .andExpect(handler().handlerType(InstaMemberController.class)) // 핸들러의 타입을 검증하는 부분
+                .andExpect(handler().methodName("connect")) // 핸들러의 메서드 이름을 검증하는 부분
+                .andExpect(status().is3xxRedirection()) // 응답 상태 코드가 3xx 리다이렉션인지 확인하는 부분
+                .andExpect(redirectedUrlPattern("/pop**")); // 리다이렉트된 URL이 "/pop"으로 시작하는지 확인하는 부분
 
-        InstaMember instaMember = instaMemberService.findByUsername("abc123").orElse(null);
+        InstaMember instaMember = instaMemberService.findByUsername("abc123").orElse(null); // "abc123" 유저네임을 가진 인스타멤버를 찾는 부분
 
-        assertThat(instaMember).isNotNull();
+        assertThat(instaMember).isNotNull(); // 찾은 인스타멤버가 null이 아닌지 검증하는 부분
 
-    }
+    } // 테스트 메서드 종료
+
 }
