@@ -67,7 +67,6 @@
 <header>
     <a href="/" class="btn  btn-link">홈</a>
     <a href="/member/me" th:if="${@rq.login}" class="btn  btn-link">내정보</a>
-    <a href="/admin/home/main" ></a>
     <a href="/member/login" th:if="${@rq.logout}" class="btn  btn-link">로그인</a>
     <a href="/member/join" th:if="${@rq.logout}" class="btn  btn-link">회원가입</a>
     <a href="javascript:;" th:if="${@rq.login}" class="btn  btn-link" onclick="$(this).next().submit();">로그아웃</a>
@@ -81,17 +80,33 @@
 <!--rq는 편하게 쓸수는 있지만 login이 되지 않으면 member는 쓸수는 없다-->
 
 <script th:inline="javascript">
-    // 타임리프 문법(파라미터, ? 뒤에 입력된 매개변수들)
+    //  타임리프 문법을 사용하여 파라미터를 가져옴 (파라미터, ? 뒤에 입력된 매개변수들)
     const params = /*[[ ${param} ]]*/ null;
 
+    // 메시지가 있으면 해당 toastNotice로 알림
     if (params.msg) {
         toastNotice(params.msg[0]);
     }
 
+    // 에러 메시지가 있으면 해당 메시지를 toastWarning로 알림
     if (params.errorMsg) {
         toastWarning(params.errorMsg[0]);
     }
+
+   // history.back 에 의해서 돌아온 경우에 실행됨
+    // 평소에도 실행됨
+    $(window).bind("pageshow", function (event) {
+        const localStorageKeyAboutHistoryBackErrorMsg = "historyBackErrorMsg___" + location.href;
+    // 에러메시지와 관련된 로컬 스토리지 키 생성
+
+        if ( localStorage.getItem(localStorageKeyAboutHistoryBackErrorMsg) ) {
+            toastWarning(localStorage.getItem(localStorageKeyAboutHistoryBackErrorMsg));
+            localStorage.removeItem(localStorageKeyAboutHistoryBackErrorMsg);
+        }
+        // 로컬 스토리지에서 에러 메시지를 가져와 toastWarning으로 알림하고, 해당 메시지를 제거
+    });
 </script>
+
 
 </body>
 

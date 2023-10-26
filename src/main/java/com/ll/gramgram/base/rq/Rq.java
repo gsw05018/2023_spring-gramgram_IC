@@ -65,7 +65,16 @@ public class Rq {
     }
 
     public String historyBack(String msg) {
-        req.setAttribute("alertMsg", msg);
+        // 사용자가 보낸 메시지를 매개변수로 받아서 처리
+        String referer = req.getHeader("referer");
+        // 요청에서 referer 헤더를 가져옴
+        String key = "historyBackErrorMsg___" + referer;
+        // localStorage에 저장될 키를 생성
+        req.setAttribute("localStorageKeyAboutHistoryBackErrorMsg", key);
+        // 생성된 키를 요청의 속성으로 설정
+        req.setAttribute("historyBackErrorMsg", msg);
+        // 이전 페이지로 돌아갈 때 표시할 메시지를 요청의 속성으로 설정
         return "common/common.js";
+
     }
 }

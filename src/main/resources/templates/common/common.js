@@ -1,11 +1,28 @@
 <script th:inline="javascript">
-// 템플릿 엔진이 javascript 코드를 인라인으로 처리하도록 설정
-    const alertMsg = /*[[${alertMsg}]]*/ null;
-    // 타임리프의 데이터 바인딩을 통해 서버에서 전달된 alertMsg 변수를 javascript 변수 alertMsg에 바인딩됨
-    if(alertMsg && alertMsg.trim(.length > 0 )){
-        alert(alertMsg.trim());
-        // alertMsg가 0보다 크면 출력
+    // 일반 메세지
+    // 로컬 스토리지 키 및 메시지들을 가져옴
+    const localStorageKeyAboutHistoryBackMsg = /*[[${localStorageKeyAboutHistoryBackMsg}]]*/ null;
+    const historyBackMsg = /*[[${historyBackMsg}]]*/ null;
+
+        // 로컬 스토리지에 이전 페이지로 돌아갈 때 메시지를 저장
+      if (localStorageKeyAboutHistoryBackMsg && localStorageKeyAboutHistoryBackMsg.trim().length > 0) {
+           localStorage.setItem(localStorageKeyAboutHistoryBackMsg, historyBackMsg);
+       }
+
+       // 에러 메세지
+       // 에러 메시지와 관련된 로컬 스토리지 키 및 메시지들을 가져옴
+       const localStorageKeyAboutHistoryBackErrorMsg = /*[[${localStorageKeyAboutHistoryBackErrorMsg}]]*/ null;
+       const historyBackErrorMsg = /*[[${historyBackErrorMsg}]]*/ null;
+
+        // 로컬 스토리지에 에러 메시지를 저장
+       if (localStorageKeyAboutHistoryBackErrorMsg && localStorageKeyAboutHistoryBackErrorMsg.trim().length > 0) {
+           localStorage.setItem(localStorageKeyAboutHistoryBackErrorMsg, historyBackErrorMsg);
     }
+    // 위 코드는 javascript를 사용하여 로컬 스토리지에서 데이터를 가져오고 저장하는 기능을 수행
+    // localStorageKeyAboutHistoryBackMsg 및 historyBackMsg는 이전 페이지로 돌아갈 때 메시지를 저장하는데 사용되는 키 및 메시지
+    // localStorageKeyAboutHistoryBackErrorMsg 및 historyBackErrorMsg는 에러 메시지를 저장하는 데 사용
+
+
     history.back();
 </script>
 // 주석으로 처리한 이유는 타임리프 템플릿 엔진은 서버측에서 클라이언트 측으로 데이터를 전달할 수 있다.
