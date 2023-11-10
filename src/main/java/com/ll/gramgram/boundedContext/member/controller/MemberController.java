@@ -26,13 +26,13 @@ public class MemberController {
 
     @AllArgsConstructor
     @Getter
-    public static class JoinForm{
+    public static class JoinForm {
         @NotBlank
-        @Size(min =4, max = 30)
+        @Size(min = 4, max = 30)
         private final String username;
 
         @NotBlank
-        @Size(min =4, max = 30)
+        @Size(min = 4, max = 30)
         private final String password;
     }
 
@@ -49,7 +49,7 @@ public class MemberController {
 
         RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword());
 
-        if(joinRs.isFail()){
+        if (joinRs.isFail()) {
             return rq.historyBack(joinRs);
         }
 

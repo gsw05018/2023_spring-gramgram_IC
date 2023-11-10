@@ -13,16 +13,16 @@ import java.util.Enumeration;
 @RequiredArgsConstructor
 public class HomeController {
 
-    private  final MemberService memberService;
+    private final MemberService memberService;
 
     @GetMapping("/")
-    public String showMain(){
+    public String showMain() {
         return "usr/home/main";
     }
 
     @GetMapping("/debugSession")
     @ResponseBody
-    public String showDebugSession(HttpSession session){
+    public String showDebugSession(HttpSession session) {
         // HttpSession 객체를 매개변수로 받아 세션 정보를 디버깅하는 메서드
         StringBuilder sb = new StringBuilder("Session content:\n");
         // StringBuilder 객체를 생성하고 초기 텍스트 추가
@@ -30,7 +30,7 @@ public class HomeController {
         Enumeration<String> attributeNames = session.getAttributeNames();
         // 현재 세션에 저장된 속성의 이름 목록을 가져옴
 
-        while (attributeNames.hasMoreElements()){
+        while (attributeNames.hasMoreElements()) {
             // 속성 이름 목록 순회
             String attributeName = attributeNames.nextElement();
             // 다음 세션 속성 이름을 가져옴

@@ -39,7 +39,8 @@ public class MemberControllerTests {
     private MemberService memberService;
 
     @Test
-    @DisplayName("회원가입 폼") // 테스트 메서드에 대한 설명을 나타내는 애너테이션
+    @DisplayName("회원가입 폼")
+        // 테스트 메서드에 대한 설명을 나타내는 애너테이션
     void t001() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
@@ -64,7 +65,8 @@ public class MemberControllerTests {
 
     @Test
     @DisplayName("회원가입")
-    @Rollback(value = false)  //db에 흔적이 남기위해서 value를 false로해야한다
+    @Rollback(value = false)
+        //db에 흔적이 남기위해서 value를 false로해야한다
         // db에 흔적이 남음
     void t002() throws Exception {
         // WHEN
@@ -152,7 +154,8 @@ public class MemberControllerTests {
     }
 
     @Test
-    @DisplayName("로그인 폼") // 테스트 메서드에 대한 설명을 나타내는 애너테이션
+    @DisplayName("로그인 폼")
+        // 테스트 메서드에 대한 설명을 나타내는 애너테이션
     void t004() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
@@ -175,45 +178,46 @@ public class MemberControllerTests {
                         """.stripIndent().trim())));
     }
 
-        @Test
-        @DisplayName("로그인 처리")
-        void t005() throws  Exception{
+    @Test
+    @DisplayName("로그인 처리")
+    void t005() throws Exception {
         // WHEN
-            ResultActions resultActions = mvc
-                    .perform(post("/member/login")
-                            .with(csrf())
-                            .param("username", "user1")
-                            .param("password", "1234")
-                    )
-                    .andDo(print());
-            // member/login 엔드포인트에 post요청을 보내고 csrf 토큰과 함께 username 및 password 전송
-            // 결과 동작을 저장하고, 콘솔에 출력
+        ResultActions resultActions = mvc
+                .perform(post("/member/login")
+                        .with(csrf())
+                        .param("username", "user1")
+                        .param("password", "1234")
+                )
+                .andDo(print());
+        // member/login 엔드포인트에 post요청을 보내고 csrf 토큰과 함께 username 및 password 전송
+        // 결과 동작을 저장하고, 콘솔에 출력
 
-            MvcResult mvcResult = resultActions.andReturn();
-            // ResultActions에서 MvcRsult를 가져옴 이를 통해 응답을 테스트하고 검사 가능
-            HttpSession session = mvcResult.getRequest().getSession(false);
-            // MvcResult에서 요청을 가져오 ㄴ다음 해당 요청의 세션을 가져온다음 해당 요청의 세션을 가져옴
-            // 여기서 false는 세션이 존재하지 않을 경우에는 null 반환
-            SecurityContext securityContext = (SecurityContext)session.getAttribute("SPRING_SECURITY_CONTEXT");
-            // 세션에서 SPRING_SECURITY_CONTEXT 속성을 가져와서 이에 해당하는 SecurityContext를 가져옴
-            // 이 보안 컨텍스트에는 사용자 정보와 권한이 포함
-            User user = (User)securityContext.getAuthentication().getPrincipal();
-            // SecurityContext에서 인증된 사용자를 가져옴
-            // 이를 통해 현재 사용자의 정보를 가져올 수 있음
-            assertThat(user.getUsername()).isEqualTo("user1");
-            // 현재 사용자의 이름이 user1과 동일한지 확인
-            // 이를 통해 로그인이 올바르게 처리되었는지 검사가능
-            resultActions
-                    .andExpect(status().is3xxRedirection())
-                    // HTTP 응답의 상태가 3xx Redirection인지 확인
-                    .andExpect(redirectedUrlPattern("/**"));
-                    // 리다이렉션된 URL이 특정 패턴을 따르는지 확인
-        }
+        MvcResult mvcResult = resultActions.andReturn();
+        // ResultActions에서 MvcRsult를 가져옴 이를 통해 응답을 테스트하고 검사 가능
+        HttpSession session = mvcResult.getRequest().getSession(false);
+        // MvcResult에서 요청을 가져오 ㄴ다음 해당 요청의 세션을 가져온다음 해당 요청의 세션을 가져옴
+        // 여기서 false는 세션이 존재하지 않을 경우에는 null 반환
+        SecurityContext securityContext = (SecurityContext) session.getAttribute("SPRING_SECURITY_CONTEXT");
+        // 세션에서 SPRING_SECURITY_CONTEXT 속성을 가져와서 이에 해당하는 SecurityContext를 가져옴
+        // 이 보안 컨텍스트에는 사용자 정보와 권한이 포함
+        User user = (User) securityContext.getAuthentication().getPrincipal();
+        // SecurityContext에서 인증된 사용자를 가져옴
+        // 이를 통해 현재 사용자의 정보를 가져올 수 있음
+        assertThat(user.getUsername()).isEqualTo("user1");
+        // 현재 사용자의 이름이 user1과 동일한지 확인
+        // 이를 통해 로그인이 올바르게 처리되었는지 검사가능
+        resultActions
+                .andExpect(status().is3xxRedirection())
+                // HTTP 응답의 상태가 3xx Redirection인지 확인
+                .andExpect(redirectedUrlPattern("/**"));
+        // 리다이렉션된 URL이 특정 패턴을 따르는지 확인
+    }
 
     @Test
 // @Rollback(value = false) // DB에 흔적이 남는다.
     @DisplayName("로그인 후에 내비바에 로그인한 회원의 username")
-    @WithUserDetails("user1") // user1로 로그인 한 상태로 진행
+    @WithUserDetails("user1")
+        // user1로 로그인 한 상태로 진행
     void t006() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
@@ -226,8 +230,8 @@ public class MemberControllerTests {
                 .andExpect(handler().methodName("showMe")) // 처리기 메서드 이름이 showMe인지 확인
                 .andExpect(status().is2xxSuccessful()) // 응답 상태 코드가 2xx(성공)인지 확인
                 .andExpect(content().string(containsString("""
-                    user1님 환영합니다.
-                    """.stripIndent().trim()))); // 응답 콘텐츠에 "user1님 환영합니다." 문자열이 포함되어 있는지 확인
+                        user1님 환영합니다.
+                        """.stripIndent().trim()))); // 응답 콘텐츠에 "user1님 환영합니다." 문자열이 포함되어 있는지 확인
     }
 
 }

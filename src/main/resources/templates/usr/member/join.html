@@ -4,55 +4,55 @@
 
 </head>
 <body>
-    <main layout:fragment="main">
+<main layout:fragment="main">
 
-        <script>
-            function JoinForm__submit(form){
+    <script>
+        function JoinForm__submit(form){
 
-                form.username.value = form.username.value.trim();
+            form.username.value = form.username.value.trim();
 
-                if(form.username.value.length == 0){
-                    toastWarning('아이디를 입력하세요');
-                    form.username.focus();
-                    return ;
-                }
-
-                if(form.username.value.length < 4){
-                    toastWarning('아이디를 4자이상 입력하세요');
-                    form.username.focus();
-                    return ;
-                }
-
-                if(form.password.value.length == 0){
-                    toastWarning('password 입력하세요');
-                    form.password.focus();
-                    return ;
-                }
-
-                if(form.password.value.length < 4){
-                    toastWarning('password 4자이상 입력하세요');
-                    form.password.focus();
-                    return ;
-                }
-                 form.submit(); // 추가를 안하면 회원가입이 안됨
-
+            if(form.username.value.length == 0){
+                toastWarning('아이디를 입력하세요');
+                form.username.focus();
+                return ;
             }
 
-        </script>
+            if(form.username.value.length < 4){
+                toastWarning('아이디를 4자이상 입력하세요');
+                form.username.focus();
+                return ;
+            }
 
-        <form th:action method="POST" class="p-10 flex flex-col gap-4" onsubmit="JoinForm__submit(this); return false;">
-            <div>
-                <input type="text" name="username" maxlength="30" placeholder="아이디" class="input input-bordered">
-            </div>
-            <div>
-                <input type="password" name="password" maxlength="30" placeholder="비밀번호" class="input input-bordered">
-            </div>
-            <div>
-                <input type="submit" value="회원가입" class="btn btn-primary">
-            </div>
-        </form>
+            if(form.password.value.length == 0){
+                toastWarning('password 입력하세요');
+                form.password.focus();
+                return ;
+            }
 
-    </main>
+            if(form.password.value.length < 4){
+                toastWarning('password 4자이상 입력하세요');
+                form.password.focus();
+                return ;
+            }
+             form.submit(); // 추가를 안하면 회원가입이 안됨
+
+        }
+
+    </script>
+
+    <form th:action method="POST" class="p-10 flex flex-col gap-4" onsubmit="JoinForm__submit(this); return false;">
+        <div>
+            <input type="text" name="username" maxlength="30" placeholder="아이디" class="input input-bordered">
+        </div>
+        <div>
+            <input type="password" name="password" maxlength="30" placeholder="비밀번호" class="input input-bordered">
+        </div>
+        <div>
+            <input type="submit" value="회원가입" class="btn btn-primary">
+        </div>
+    </form>
+
+</main>
 </body>
 </html>
 <!--function 키워드를 사용하여 함수를 정의합니다.

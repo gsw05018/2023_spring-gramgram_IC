@@ -16,11 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
+
     // UserDetailsService 인터페이스에서 loadUserByUsername 메서드를 재정의한다
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // MemberRepository를 사용하여 제공된 사용자 이름으로 회원찾기
-        Member member = memberRepository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("username(%s) not found".formatted(username)));
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("username(%s) not found".formatted(username)));
         // 회원을 찾을 수가 없는 경우, 포맷된 오류메시지 출력
         return new User(member.getUsername(), member.getPassword(), member.getGrantedAuthorities());
         // 검색된 회원의 정보를 사용하여 새로운 User 객체를 생성하고 반환

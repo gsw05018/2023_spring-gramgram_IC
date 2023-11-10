@@ -43,7 +43,7 @@ public class Member {
         // GrantedAuthority를 저장할 리스트 생성
         grantedAuthorities.add(new SimpleGrantedAuthority("member"));
         // Member라는 이름의 SimpleGrantedAuthority를 생성하여 리스트 추가
-        if("admin".equals(username)){
+        if ("admin".equals(username)) {
             grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
         }
         // Username이 amidn인 경우 admin이라는 이름의 SimpleGrantedAuthority를 리스트에 추가
@@ -51,7 +51,7 @@ public class Member {
         return grantedAuthorities;
         // 권한 리스트 반환
     }
-    
+
     // 메서드 시그니처 : getGrantedAuthorities, 반환형은 List<? esxtends GrantedAuthority>를 리턴
     //SimpleGrantedAuthority : 스프링 시큐리티에서 사용자의 권한을 표현하는데 사용되는 클래스
     // 사용자가 가질 수 있는 권한을 나타내는 문자열을 저장하고, 이를 기반으로 인증 및 권한 부여 처리

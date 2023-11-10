@@ -42,7 +42,8 @@ public class InstaMemberControllerTests {
     // 인스탕회원 정보 입력 폼 테스트
     @Test // 테스트 메서드임을 나타내는 어노테이션
     @DisplayName("인스탕회원 정보 입력 폼") // 테스트 케이스의 이름을 정의하는 어노테이션
-    @WithUserDetails("user1") // 사용자 디테일을 지정하는 어노테이션
+    @WithUserDetails("user1")
+    // 사용자 디테일을 지정하는 어노테이션
     void t001() throws Exception {
 
         // WHEN
@@ -71,7 +72,8 @@ public class InstaMemberControllerTests {
 
     // 로그인하지 않고 인스타회원 정보 입력 페이지에 접근하는 경우 테스트
     @Test // 테스트 메서드임을 나타내는 어노테이션
-    @DisplayName("로그인을 안하고 인스타회원 정보 입력 페이지에 접근하면 로그인 페이지로 302") // 테스트 케이스의 이름을 정의하는 어노테이션
+    @DisplayName("로그인을 안하고 인스타회원 정보 입력 페이지에 접근하면 로그인 페이지로 302")
+    // 테스트 케이스의 이름을 정의하는 어노테이션
     void t002() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
@@ -89,7 +91,8 @@ public class InstaMemberControllerTests {
     @Test // 테스트 메서드임을 나타내는 어노테이션
     @DisplayName("인스타회원 정보 입력 폼 처리") // 테스트의 이름을 표시하는 어노테이션
     @WithUserDetails("user1") // 지정된 사용자로 인증된 상태에서 테스트를 실행하는 어노테이션
-    @Rollback(value = false) // 롤백을 수행하지 않고 테스트 데이터를 데이터베이스에 반영하는 옵션을 설정하는 어노테이션
+    @Rollback(value = false)
+        // 롤백을 수행하지 않고 테스트 데이터를 데이터베이스에 반영하는 옵션을 설정하는 어노테이션
     void t003() throws Exception { //9 테스트 메서드 시작
 
         // WHEN 섹션, 테스트할 코드의 실행 부분

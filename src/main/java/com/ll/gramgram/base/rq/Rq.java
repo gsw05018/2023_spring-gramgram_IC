@@ -25,7 +25,7 @@ public class Rq {
     private final User user; // User를 사용하기 위한 멤버 변수
     private Member member = null; // Member 객체를 담을 멤버 변수, 초기값은 null
 
-    public Rq(MemberService memberService, HttpSession session, HttpServletRequest req, HttpServletResponse resp){
+    public Rq(MemberService memberService, HttpSession session, HttpServletRequest req, HttpServletResponse resp) {
 
         this.memberService = memberService; // memberService 초기화
         this.req = req; //  HttpServletRequest 초기화
@@ -35,7 +35,7 @@ public class Rq {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         // 현재 로그인한 회원의 인증정보를 가져옴
 
-        if(authentication.getPrincipal() instanceof User){ // 현재 사용자가 User클래스의 인스턴스인지 확인
+        if (authentication.getPrincipal() instanceof User) { // 현재 사용자가 User클래스의 인스턴스인지 확인
             this.user = (User) authentication.getPrincipal(); // 사용자가 User 클래스의 인스턴스 일경우 user 변수에 캐스팅하여 할당
         } else {
             this.user = null; // 사용자가 user 클래스의 인스턴스가 아닐 경우 user 변수에 null 할당
@@ -44,23 +44,23 @@ public class Rq {
     }
 
 
-    public boolean isLogin(){ // 로그인 상태를 확인하는 메서드
+    public boolean isLogin() { // 로그인 상태를 확인하는 메서드
         return user != null; // user 변수가 null 아닐경우 로그인
 
     }
 
-    public boolean isLogout(){ // 로그아웃 상태를 확인하는 메서드
+    public boolean isLogout() { // 로그아웃 상태를 확인하는 메서드
         return !isLogin(); // 로그인이 아닌경우 로그아웃
 
     }
 
-    public Member getMember(){ // 로그인된 회원ㄷ의 객체를 반환하는 메서드
+    public Member getMember() { // 로그인된 회원ㄷ의 객체를 반환하는 메서드
 
-        if(isLogout()){
+        if (isLogout()) {
             return null; // 로그아웃 상태일 경우 null 반환
         }
 
-        if(member == null){
+        if (member == null) {
             member = memberService.findByUsername(user.getUsername()).orElseThrow();
             // memberService를 사용하여 현재 사용자의 정보를 가져옴
         }

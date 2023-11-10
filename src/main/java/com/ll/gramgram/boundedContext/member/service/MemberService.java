@@ -20,13 +20,13 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public Optional<Member> findByUsername(String username){
+    public Optional<Member> findByUsername(String username) {
         return memberRepository.findByUsername(username);
     }
 
     @Transactional
-    public RsData<Member> join(String username, String password){
-        if(findByUsername(username).isPresent()){
+    public RsData<Member> join(String username, String password) {
+        if (findByUsername(username).isPresent()) {
             return RsData.of("F-1", "해당 아이디(%s)는 이미 사용중입니다.".formatted(username));
         }
 
@@ -39,9 +39,9 @@ public class MemberService {
                 .password(passwordEncoder.encode(password))
                 .build();
 
-         memberRepository.save(member);
+        memberRepository.save(member);
 
-         return RsData.of("S-1", "회원가입이 완료되었습니다.", member);
+        return RsData.of("S-1", "회원가입이 완료되었습니다.", member);
     }
 
 }

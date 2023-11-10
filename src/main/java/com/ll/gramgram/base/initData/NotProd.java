@@ -14,7 +14,7 @@ public class NotProd {
     CommandLineRunner initData(
             MemberService memberService
             // CommandLineRunner을 사용하여 초기 데이터 설정
-    ){
+    ) {
         return args -> {
             // MemberService를 사용하여 각각의 사용자 등록
             memberService.join("admin", "1234");

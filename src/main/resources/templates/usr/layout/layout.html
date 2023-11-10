@@ -71,7 +71,7 @@
     <a href="/member/login" th:if="${@rq.logout}" class="btn  btn-link">로그인</a>
     <a href="/member/join" th:if="${@rq.logout}" class="btn  btn-link">회원가입</a>
     <a href="javascript:;" th:if="${@rq.login}" class="btn  btn-link" onclick="$(this).next().submit();">로그아웃</a>
-    <form hidden  th:if="${@rq.login}" th:action="|/member/logout|" method="POST"></form>
+    <form hidden th:if="${@rq.login}" th:action="|/member/logout|" method="POST"></form>
     <span th:if="${@rq.login}" th:text="|${@rq.member.username}님 환영합니다.|"></span>
 </header>
 <main layout:fragment="main"></main>
