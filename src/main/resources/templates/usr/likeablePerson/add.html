@@ -1,0 +1,83 @@
+<html layout:decorate="~{usr/layout/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <title>당신이 좋아하는 사람이 누군지 알려주세요</title>
+</head>
+<body>
+
+<main layout:fragment="main">
+<!--   인스타 회원정보가 연결되어 있지 않을 때 나타남  if문을 써서 !를 사용해도 상관없음 -->
+    <th:block th:unless="${@rq.member.hasConnectedInstaMember}">
+        <div>먼저 본인의 인스타그램 아이디를 입력해주세요</div>
+        <div>
+            <a href="/instaMember/connect" class="btn btn-link">본인의 인스타그램 아이디 연결하기</a>
+        </div>
+    </th:block>
+
+<!-- 인스타 회원정보가 연결되어 있을때 -->
+    <th:block th:if="${@rq.member.hasConnectedInstaMember}">
+        <script>
+            function AddForm_submit(form){
+                form.username.value = form.username.value.trim();
+
+                if(form.username.value.length == 0 ){
+                toastWarning('상대방의 인스타그램 아이디를 입력해주세요');
+                form.username.focus();
+                return;
+                }
+
+                 if(form.username.value.length < 4 ){
+                toastWarning('상대방의 인스타그램 아이디를 4자 이상 입력해주세요');
+                form.username.focus();
+                return;
+                }
+
+                const $checkedAttractiveTypeCodeRadiobutton = ${form}.find("[name=attractiveTypeCode]:checked");
+
+                if($checkedAttractiveTypeCodeRadioButton.length == 0){
+                    toastWarning('상대방의 매력포인트를 선택해주세요');
+                    $(form).find("[name=attractiveTypeCode]:first").focus();
+                    return;
+                }
+
+                form.submit();
+            }
+        </script>
+
+<!--    폼을 보내기전에 스크립트로 유효성 검사를 한 후 검사에 문제가 없을 시 form으로 서버로 보낸다    -->
+        <form th:action method="post" class="p-10 max-w-sm flex flex-col gap-4"
+            onsubmit="AddForm_submit(this); return false;">
+            <div>
+                <input type="text" name="username" autocapitalize="off" maxlength="30" placeholder="상대방의 인스타그램 아이디"
+                class="input input-bordered">
+            </div>
+            <div>
+                <div class="form-control">
+                    <label class="label cursor-pointer">
+                        <span class="label-text">외모</span>
+                        <input type="radio" name="attractiveTypeCode" value="1" class="radio focus:bg-red-100">
+                    </label>
+                    <div>
+                        <label class="label cursor-pointer">
+                            <span class="label-text">성격</span>
+                            <input type="radio" name="attractiveTypeCode" value="2" class="radio focus:bg-red-100">
+                        </label>
+                    </div>
+                    <div>
+                        <label class="label cursor-pointer">
+                            <span class="label-text">능력</span>
+                            <input type="radio" name="attractiveTypeCode" value="3" class="radio focus:bg-red-100">
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <input type="submit" value="정보입력" class="btn btn-primary">
+                </div>
+            </div>
+
+        </form>
+
+    </th:block>
+</main>
+
+</body>
+</html>

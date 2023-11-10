@@ -57,4 +57,8 @@ public class Member {
     // 사용자가 가질 수 있는 권한을 나타내는 문자열을 저장하고, 이를 기반으로 인증 및 권한 부여 처리
     // 간단한 문자열로 표현된 권한을 나타내며, 일반적으로 ROLE_ADMIN같은 형식으로 사용됨
 
+    public boolean hasConnectedInstaMember(){
+        return instaMember != null;
+    }
+
 }
